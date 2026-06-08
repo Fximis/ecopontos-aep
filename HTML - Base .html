@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoPontos - Plataforma de Reciclagem</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --bg:        #0a0f0d;
+    --bg-soft:   #0e1614;
+    --neon:      #39ff14;   
+    --cyan:      #00e5ff;   
+    --text:      #e7f5ee;
+    --muted:     #8aa39a;
+    --glass:     rgba(255,255,255,.045);
+    --glass-brd: rgba(57,255,20,.18);
+    --glow:      rgba(57,255,20,.35);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Sora', 'Segoe UI', sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+    position:relative;
+    min-height:100vh;
+}
+
+/* Malha de gradiente + grade no fundo */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background:
+        radial-gradient(60% 50% at 15% 0%,  rgba(57,255,20,.18), transparent 60%),
+        radial-gradient(50% 50% at 90% 10%, rgba(0,229,255,.14), transparent 60%),
+        radial-gradient(60% 60% at 50% 110%,rgba(57,255,20,.10), transparent 60%),
+        var(--bg);
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 30%, #000 40%, transparent 100%);
+}
+
+/* =========== HEADER =========== */
+
+header{
+    text-align:center;
+    padding:90px 20px 70px;
+    position:relative;
+    animation:fadeUp .7s ease both;
+}
+
+header h1{
+    font-size:clamp(2.6rem, 7vw, 5rem);
+    font-weight:800;
+    letter-spacing:-2px;
+    line-height:1;
+    background:linear-gradient(120deg, var(--neon), var(--cyan));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 24px var(--glow));
+}
+
+header p{
+    margin-top:18px;
+    color:var(--muted);
+    font-size:1.1rem;
+    letter-spacing:.5px;
+}
+
+/* Linha de brilho decorativa sob o header */
+header::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:34px;
+    transform:translateX(-50%);
+    width:min(420px, 70%);
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--neon), transparent);
+    box-shadow:0 0 16px var(--glow);
+}
+
+/* =========== ÁREA DE USUÁRIO =========== */
+
+.area-usuario{
+    position:absolute;
+    top:24px;
+    right:28px;
+    z-index:20;
+}
+
+.btn-usuario{
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    color:var(--text);
+    padding:11px 20px;
+    border-radius:999px;
+    cursor:pointer;
+    font-size:.95rem;
+    font-weight:600;
+    backdrop-filter:blur(10px);
+    transition:.25s;
+}
+
+.btn-usuario:hover{
+    border-color:var(--neon);
+    box-shadow:0 0 18px var(--glow);
+    color:var(--neon);
+}
+
+.menu-usuario{
+    display:none;
+    position:absolute;
+    right:0;
+    top:54px;
+    background:rgba(14,22,20,.92);
+    border:1px solid var(--glass-brd);
+    border-radius:12px;
+    box-shadow:0 12px 40px rgba(0,0,0,.5);
+    min-width:180px;
+    overflow:hidden;
+    backdrop-filter:blur(16px);
+}
+
+.menu-usuario.aberto{
+    display:block;
+    animation:fadeUp .2s ease both;
+}
+
+.menu-usuario button{
+    background:transparent;
+    color:var(--text);
+    width:100%;
+    text-align:left;
+    border:none;
+    cursor:pointer;
+    padding:14px 18px;
+    font-size:.92rem;
+    transition:.2s;
+}
+
+.menu-usuario button:hover{
+    background:rgba(57,255,20,.12);
+    color:var(--neon);
+}
+
+/* =========== LAYOUT / SEÇÕES =========== */
+
+section{
+    max-width:1080px;
+    margin:0 auto;
+    padding:30px 24px;
+    animation:fadeUp .7s ease both;
+}
+
+section:nth-of-type(1){ animation-delay:.05s; }
+section:nth-of-type(2){ animation-delay:.12s; }
+section:nth-of-type(3){ animation-delay:.18s; }
+section:nth-of-type(4){ animation-delay:.24s; }
+section:nth-of-type(5){ animation-delay:.30s; }
+
+h2{
+    font-size:1.7rem;
+    font-weight:700;
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    letter-spacing:-.5px;
+}
+
+/* marcador neón antes de cada título */
+h2::before{
+    content:"";
+    width:10px;
+    height:26px;
+    border-radius:3px;
+    background:linear-gradient(var(--neon), var(--cyan));
+    box-shadow:0 0 14px var(--glow);
+}
+
+/* =========== CARTÕES DE VIDRO =========== */
+
+.card{
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,.07);
+    padding:28px;
+    border-radius:18px;
+    backdrop-filter:blur(14px);
+    box-shadow:0 8px 32px rgba(0,0,0,.35);
+    line-height:1.6;
+    color:var(--muted);
+}
+
+.card p{ color:var(--muted); }
+
+/* =========== FORMULÁRIOS =========== */
+
+label{
+    display:block;
+    margin-top:6px;
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    color:var(--muted);
+}
+
+input, select{
+    width:100%;
+    padding:14px 16px;
+    margin-top:8px;
+    margin-bottom:18px;
+    background:rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:12px;
+    color:var(--text);
+    font-size:1rem;
+    transition:.25s;
+}
+
+input::placeholder{ color:#5e716a; }
+
+input:focus, select:focus{
+    outline:none;
+    border-color:var(--neon);
+    box-shadow:0 0 0 3px rgba(57,255,20,.15), 0 0 18px var(--glow);
+}
+
+select option{
+    background:#0e1614;
+    color:var(--text);
+}
+
+/* =========== BOTÕES =========== */
+
+button{
+    background:transparent;
+    color:var(--neon);
+    border:1px solid var(--neon);
+    padding:13px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:.95rem;
+    font-weight:600;
+    font-family:'Sora', sans-serif;
+    margin-right:10px;
+    margin-top:8px;
+    transition:.25s;
+}
+
+button:hover{
+    background:var(--neon);
+    color:#04140a;
+    box-shadow:0 0 24px var(--glow);
+    transform:translateY(-2px);
+}
+
+button:active{ transform:translateY(0); }
+
+/* =========== PONTUAÇÃO =========== */
+
+#pontuacao{
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(2.6rem, 7vw, 4rem);
+    font-weight:700;
+    color:var(--neon);
+    text-shadow:0 0 28px var(--glow);
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    border-radius:18px;
+    padding:30px;
+    text-align:center;
+    backdrop-filter:blur(14px);
+    letter-spacing:1px;
+}
+
+/* =========== TABELA / HISTÓRICO =========== */
+
+table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:16px;
+    overflow:hidden;
+    backdrop-filter:blur(14px);
+}
+
+th{
+    background:rgba(57,255,20,.08);
+    color:var(--neon);
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    font-weight:700;
+}
+
+th, td{
+    border-bottom:1px solid rgba(255,255,255,.06);
+    padding:15px;
+    text-align:center;
+}
+
+td{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--text);
+    font-size:.92rem;
+}
+
+tbody tr{ transition:.2s; }
+tbody tr:hover{ background:rgba(57,255,20,.06); }
+tbody tr:last-child td{ border-bottom:none; }
+
+/* =========== BENEFÍCIOS =========== */
+
+.recompensas{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+    gap:22px;
+}
+
+.recompensa{
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,.08);
+    padding:26px;
+    border-radius:18px;
+    backdrop-filter:blur(14px);
+    position:relative;
+    overflow:hidden;
+    transition:.3s;
+}
+
+/* brilho que aparece no hover */
+.recompensa::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(120% 80% at 50% 0%, rgba(57,255,20,.15), transparent 70%);
+    opacity:0;
+    transition:.3s;
+}
+
+.recompensa:hover{
+    transform:translateY(-6px);
+    border-color:var(--glass-brd);
+    box-shadow:0 16px 40px rgba(0,0,0,.45), 0 0 26px rgba(57,255,20,.12);
+}
+
+.recompensa:hover::before{ opacity:1; }
+
+.recompensa h3{
+    font-size:1.2rem;
+    margin-bottom:10px;
+    position:relative;
+}
+
+.recompensa p{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--cyan);
+    font-weight:700;
+    font-size:1.1rem;
+    margin-bottom:8px;
+    position:relative;
+}
+
+.recompensa button{ position:relative; width:100%; margin-right:0; }
+
+/* =========== MODAL DE LOGIN / CADASTRO =========== */
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(4,8,7,.72);
+    backdrop-filter:blur(8px);
+    justify-content:center;
+    align-items:center;
+    z-index:100;
+}
+
+.overlay.aberto{
+    display:flex;
+    animation:fadeIn .25s ease both;
+}
+
+.modal{
+    background:rgba(14,22,20,.85);
+    border:1px solid var(--glass-brd);
+    color:var(--text);
+    padding:34px;
+    border-radius:20px;
+    width:90%;
+    max-width:400px;
+    backdrop-filter:blur(20px);
+    box-shadow:0 24px 60px rgba(0,0,0,.6), 0 0 40px rgba(57,255,20,.1);
+    animation:fadeUp .3s ease both;
+}
+
+.modal h2{
+    margin-bottom:22px;
+    font-size:1.5rem;
+}
+
+.abas{
+    display:flex;
+    gap:8px;
+    margin-bottom:24px;
+    background:rgba(0,0,0,.3);
+    padding:6px;
+    border-radius:12px;
+}
+
+.aba{
+    flex:1;
+    background:transparent;
+    color:var(--muted);
+    border:none;
+    margin:0;
+    padding:11px;
+    border-radius:8px;
+}
+
+.aba:hover{
+    background:transparent;
+    color:var(--text);
+    transform:none;
+    box-shadow:none;
+}
+
+.aba.ativa{
+    background:var(--neon);
+    color:#04140a;
+    box-shadow:0 0 18px var(--glow);
+}
+
+.modal-acoes{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-top:12px;
+}
+
+.modal-acoes button{ flex:1; margin:0; }
+
+.btn-fechar{
+    background:transparent;
+    border-color:rgba(255,255,255,.2);
+    color:var(--muted);
+}
+
+.btn-fechar:hover{
+    background:rgba(255,255,255,.08);
+    color:var(--text);
+    border-color:rgba(255,255,255,.3);
+    box-shadow:none;
+}
+
+/* =========== FOOTER =========== */
+
+footer{
+    text-align:center;
+    padding:40px 20px;
+    margin-top:50px;
+    color:var(--muted);
+    font-size:.9rem;
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+/* =========== ANIMAÇÕES =========== */
+
+@keyframes fadeUp{
+    from{ opacity:0; transform:translateY(18px); }
+    to{   opacity:1; transform:translateY(0); }
+}
+
+@keyframes fadeIn{
+    from{ opacity:0; }
+    to{   opacity:1; }
+}
+
+/* Scrollbar estilizada */
+::-webkit-scrollbar{ width:10px; }
+::-webkit-scrollbar-track{ background:var(--bg); }
+::-webkit-scrollbar-thumb{
+    background:rgba(57,255,20,.3);
+    border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover{ background:var(--neon); }
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="area-usuario">
+
+        <button class="btn-usuario" id="btnUsuario" onclick="aoClicarBotaoUsuario()">
+            Entrar
+        </button>
+
+        <div class="menu-usuario" id="menuUsuario">
+            <button onclick="logout()">Sair (logout)</button>
+        </div>
+
+    </div>
+
+    <h1>🌱 EcoPontos</h1>
+    <p>Recicle, acumule pontos e ganhe recompensas.</p>
+</header>
+
+<!-- ===== MODAL DE LOGIN / CADASTRO ===== -->
+<div class="overlay" id="overlayLogin">
+
+    <div class="modal">
+
+        <div class="abas">
+            <button class="aba ativa" id="abaLogin" onclick="trocarAba('login')">
+                Login
+            </button>
+            <button class="aba" id="abaCadastro" onclick="trocarAba('cadastro')">
+                Cadastrar
+            </button>
+        </div>
+
+        <h2 id="tituloModal">Fazer Login</h2>
+
+        <label>Nome de usuário</label>
+        <input type="text" id="campoNome">
+
+        <label>Senha</label>
+        <input type="password" id="campoSenha">
+
+        <div class="modal-acoes">
+            <button class="btn-fechar" onclick="fecharModal()">
+                Cancelar
+            </button>
+            <button id="btnConfirmar" onclick="confirmarModal()">
+                Entrar
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<section>
+    <h2>Sobre o Projeto</h2>
+
+    <div class="card">
+        <p>
+            O EcoPontos é uma plataforma de gamificação para incentivar a reciclagem.
+            Os usuários registram materiais recicláveis entregues em pontos de coleta
+            e recebem pontos que podem ser trocados por benefícios e recompensas.
+        </p>
+    </div>
+</section>
+
+<section>
+    <h2>Registrar Entrega</h2>
+
+    <div class="card">
+
+        <label>Material Reciclável</label>
+
+        <select id="material">
+            <option value="10">Papel (10 pts/kg)</option>
+            <option value="15">Plástico (15 pts/kg)</option>
+            <option value="20">Vidro (20 pts/kg)</option>
+            <option value="25">Metal (25 pts/kg)</option>
+        </select>
+
+        <label>Quantidade (kg)</label>
+
+        <input type="number" id="quantidade" min="1">
+
+        <button onclick="registrarEntrega()">
+            Registrar Entrega
+        </button>
+
+        <button onclick="desfazerUltimaEntrega()">
+            Desfazer Última Entrega
+        </button>
+
+    </div>
+</section>
+
+<section>
+    <h2>Pontuação Total</h2>
+
+    <div id="pontuacao">0 pontos</div>
+</section>
+
+<section>
+    <h2>Histórico de Entregas (Pilha)</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Material</th>
+                <th>Quantidade</th>
+                <th>Pontos</th>
+            </tr>
+        </thead>
+
+        <tbody id="historico"></tbody>
+    </table>
+</section>
+
+<section>
+    <h2>Benefícios Resgatados</h2>
+
+    <div class="recompensas" id="beneficiosResgatados"></div>
+</section>
+
+<section>
+    <h2>Benefícios Disponíveis</h2>
+
+    <div class="recompensas">
+
+        <div class="recompensa">
+            <h3>🚌 Passagem de Ônibus</h3>
+            <p>75 pontos</p>
+            <button onclick="resgatarBeneficio(75,'Passagem de Ônibus')">
+                Resgatar
+            </button>
+        </div>
+
+        <div class="recompensa">
+            <h3>🎟️ Cupom Parceiro</h3>
+            <p>100 pontos</p>
+            <button onclick="resgatarBeneficio(100,'Cupom Parceiro')">
+                Resgatar
+            </button>
+        </div>
+
+        <div class="recompensa">
+            <h3>🏪 Desconto em Loja</h3>
+            <p>250 pontos</p>
+            <button onclick="resgatarBeneficio(250,'Desconto em Loja')">
+                Resgatar
+            </button>
+        </div>
+
+        <div class="recompensa">
+            <h3>💡 Desconto na Conta de Luz/Água</h3>
+            <p>350 pontos</p>
+            <button onclick="resgatarBeneficio(350,'Desconto na Conta de Luz/Água')">
+                Resgatar
+            </button>
+        </div>
+
+        <div class="recompensa">
+            <h3>🏛️ Benefício Municipal</h3>
+            <p>500 pontos</p>
+            <button onclick="resgatarBeneficio(500,'Benefício Municipal')">
+                Resgatar
+            </button>
+        </div>
+
+        <div class="recompensa">
+            <h3>🚲 Aluguel de Bicicleta (1 mês)</h3>
+            <p>750 pontos</p>
+            <button onclick="resgatarBeneficio(750,'Aluguel de Bicicleta (1 mês)')">
+                Resgatar
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    EcoPontos © 2025
+</footer>
+
+<script>
+
+// =====================================
+// MODELAGEM ORIENTADA A OBJETOS
+// =====================================
+
+class Usuario {
+
+    constructor(nome, senha){
+        this.nome = nome;
+        this.senha = senha;
+        this.pontos = 0;
+
+        // Cada usuário tem sua PRÓPRIA pilha de entregas
+        this.historico = new Pilha();
+
+        // Cada usuário tem sua PRÓPRIA pilha de benefícios resgatados
+        this.historicoBeneficios = new Pilha();
+    }
+
+    adicionarPontos(valor){
+        this.pontos += valor;
+    }
+}
+
+class Entrega {
+
+    constructor(material, quantidade, pontos){
+
+        this.material = material;
+        this.quantidade = quantidade;
+        this.pontos = pontos;
+        this.data = new Date().toLocaleDateString("pt-BR");
+    }
+}
+
+class Beneficio {
+
+    constructor(nome, custo){
+
+        this.nome = nome;
+        this.custo = custo;
+    }
+}
+
+// =====================================
+// ESTRUTURA DE DADOS - PILHA
+// =====================================
+
+class Pilha {
+
+    constructor(){
+        this.itens = [];
+    }
+
+    empilhar(item){
+        this.itens.push(item);
+    }
+
+    desempilhar(){
+        return this.itens.pop();
+    }
+
+    topo(){
+        return this.itens[this.itens.length - 1];
+    }
+
+    estaVazia(){
+        return this.itens.length === 0;
+    }
+
+    obterItens(){
+        return this.itens;
+    }
+}
+
+// =====================================
+// OBJETOS DO SISTEMA
+// =====================================
+
+const beneficios = [
+
+    new Beneficio("Passagem de Ônibus",75),
+    new Beneficio("Cupom Parceiro",100),
+    new Beneficio("Desconto em Loja",250),
+    new Beneficio("Desconto na Conta de Luz/Água",350),
+    new Beneficio("Benefício Municipal",500),
+    new Beneficio("Aluguel de Bicicleta (1 mês)",750)
+
+];
+
+/* =====================================
+   GERENCIADOR DE USUÁRIOS (EM MEMÓRIA)
+   =====================================
+ Guarda todos os perfis criados num Map (chave = nome).
+ Nada é salvo em banco de dados:  só na memória
+ e desaparece ao recarregar a página.*/
+
+class GerenciadorUsuarios {
+
+    constructor(){
+        this.usuarios = new Map();
+        this.usuarioAtivo = null;
+    }
+
+    existe(nome){
+        return this.usuarios.has(nome);
+    }
+
+    cadastrar(nome, senha){
+        const novo = new Usuario(nome, senha);
+        this.usuarios.set(nome, novo);
+        return novo;
+    }
+
+    autenticar(nome, senha){
+        const u = this.usuarios.get(nome);
+
+        if(u && u.senha === senha){
+            return u;
+        }
+
+        return null;
+    }
+
+    entrar(usuario){
+        this.usuarioAtivo = usuario;
+    }
+
+    sair(){
+        this.usuarioAtivo = null;
+    }
+
+    estaLogado(){
+        return this.usuarioAtivo !== null;
+    }
+}
+
+const gerenciador = new GerenciadorUsuarios();
+
+// =====================================
+// REGISTRAR ENTREGA
+// =====================================
+
+function registrarEntrega(){
+
+    if(!gerenciador.estaLogado()){
+        alert("Faça login primeiro para registrar uma entrega.");
+        return;
+    }
+
+    const usuario = gerenciador.usuarioAtivo;
+
+    const materialSelect =
+        document.getElementById("material");
+
+    const quantidade =
+        Number(document.getElementById("quantidade").value);
+
+    if(quantidade <= 0 || isNaN(quantidade)){
+
+        alert("Digite uma quantidade válida.");
+        return;
+    }
+
+    const pontosPorKg =
+        Number(materialSelect.value);
+
+    const material =
+        materialSelect.options[
+            materialSelect.selectedIndex
+        ].text.split(" ")[0];
+
+    const pontosGanhos =
+        quantidade * pontosPorKg;
+
+    usuario.adicionarPontos(
+        pontosGanhos
+    );
+
+    document.getElementById("pontuacao").innerHTML =
+        usuario.pontos + " pontos";
+
+    const entrega =
+        new Entrega(
+            material,
+            quantidade,
+            pontosGanhos
+        );
+
+    // EMPILHAR (na pilha do usuário ativo)
+
+    usuario.historico.empilhar(
+        entrega
+    );
+
+    atualizarHistorico();
+
+    document.getElementById("quantidade").value = "";
+
+    alert(
+        "Entrega registrada!\nVocê ganhou " +
+        pontosGanhos +
+        " pontos."
+    );
+}
+
+// =====================================
+// DESFAZER ÚLTIMA ENTREGA
+// =====================================
+
+function desfazerUltimaEntrega(){
+
+    if(!gerenciador.estaLogado()){
+        alert("Faça login primeiro.");
+        return;
+    }
+
+    const usuario = gerenciador.usuarioAtivo;
+
+    if(usuario.historico.estaVazia()){
+
+        alert(
+            "Não há entregas para remover."
+        );
+
+        return;
+    }
+
+    const ultimaEntrega =
+        usuario.historico.desempilhar();
+
+    usuario.pontos -=
+        ultimaEntrega.pontos;
+
+    document.getElementById("pontuacao").innerHTML =
+        usuario.pontos + " pontos";
+
+    atualizarHistorico();
+
+    alert(
+        "Última entrega removida!"
+    );
+}
+
+// =====================================
+// ATUALIZAR TABELA
+// =====================================
+
+function atualizarHistorico(){
+
+    const tabela =
+        document.getElementById("historico");
+
+    tabela.innerHTML = "";
+
+    // Sem usuário logado, não há histórico para mostrar
+    if(!gerenciador.estaLogado()){
+        return;
+    }
+
+    const entregas =
+        gerenciador.usuarioAtivo.historico.obterItens();
+
+    for(
+        let i = entregas.length - 1;
+        i >= 0;
+        i--
+    ){
+
+        tabela.innerHTML += `
+            <tr>
+                <td>${entregas[i].data}</td>
+                <td>${entregas[i].material}</td>
+                <td>${entregas[i].quantidade} kg</td>
+                <td>${entregas[i].pontos}</td>
+            </tr>
+        `;
+    }
+}
+
+// =====================================
+// ATUALIZAR BENEFÍCIOS RESGATADOS
+// =====================================
+
+function atualizarBeneficiosResgatados(){
+
+    const container = document.getElementById("beneficiosResgatados");
+
+    container.innerHTML = "";
+
+    // Sem usuário logado, não há benefícios para mostrar
+    if(!gerenciador.estaLogado()){
+        container.innerHTML = '<p style="color: var(--muted);">Você ainda não resgatou nenhum benefício.</p>';
+        return;
+    }
+
+    const usuario = gerenciador.usuarioAtivo;
+    const resgates = usuario.historicoBeneficios.obterItens();
+
+    if(resgates.length === 0){
+        container.innerHTML = '<p style="color: var(--muted);">Você ainda não resgatou nenhum benefício.</p>';
+        return;
+    }
+
+    // Exibe em ordem reversa (mais recentes primeiro)
+    for(let i = resgates.length - 1; i >= 0; i--){
+
+        const resgate = resgates[i];
+
+        container.innerHTML += `
+            <div class="recompensa">
+                <h3>${resgate.nome}</h3>
+                <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 10px;">${resgate.data}</p>
+                <p>-${resgate.custo} pontos</p>
+            </div>
+        `;
+    }
+}
+
+// =====================================
+// RESGATAR BENEFÍCIO
+// =====================================
+
+function resgatarBeneficio(custo, nome){
+
+    if(!gerenciador.estaLogado()){
+        alert("Faça login primeiro para resgatar benefícios.");
+        return;
+    }
+
+    const usuario = gerenciador.usuarioAtivo;
+
+    if(usuario.pontos >= custo){
+
+        usuario.pontos -= custo;
+
+        document.getElementById("pontuacao").innerHTML =
+            usuario.pontos + " pontos";
+
+        alert(
+            "Benefício resgatado: " + nome
+        );
+
+        // Armazenar o resgate no histórico
+        const resgate = {
+            nome: nome,
+            custo: custo,
+            data: new Date().toLocaleDateString("pt-BR")
+        };
+
+        usuario.historicoBeneficios.empilhar(resgate);
+
+        // Atualizar a seção de benefícios resgatados
+        atualizarBeneficiosResgatados();
+
+    }else{
+
+        alert(
+            "Você não possui pontos suficientes."
+        );
+    }
+}
+
+// =====================================
+// LOGIN / CADASTRO / LOGOUT
+// =====================================
+
+// Modo atual do modal: "login" ou "cadastro"
+let modoModal = "login";
+
+// Clique no botão do header:
+// - se logado, abre/fecha o menu (logout)
+// - se não, abre o modal de login/cadastro
+function aoClicarBotaoUsuario(){
+
+    if(gerenciador.estaLogado()){
+
+        document.getElementById("menuUsuario")
+            .classList.toggle("aberto");
+
+    }else{
+
+        abrirModal();
+    }
+}
+
+function abrirModal(){
+
+    trocarAba("login");
+
+    document.getElementById("campoNome").value = "";
+    document.getElementById("campoSenha").value = "";
+
+    document.getElementById("overlayLogin")
+        .classList.add("aberto");
+}
+
+function fecharModal(){
+
+    document.getElementById("overlayLogin")
+        .classList.remove("aberto");
+}
+
+// Alterna entre as abas "Login" e "Cadastrar"
+function trocarAba(aba){
+
+    modoModal = aba;
+
+    const abaLogin    = document.getElementById("abaLogin");
+    const abaCadastro = document.getElementById("abaCadastro");
+    const titulo      = document.getElementById("tituloModal");
+    const btn         = document.getElementById("btnConfirmar");
+
+    if(aba === "login"){
+
+        abaLogin.classList.add("ativa");
+        abaCadastro.classList.remove("ativa");
+        titulo.innerHTML = "Fazer Login";
+        btn.innerHTML = "Entrar";
+
+    }else{
+
+        abaCadastro.classList.add("ativa");
+        abaLogin.classList.remove("ativa");
+        titulo.innerHTML = "Criar Conta";
+        btn.innerHTML = "Cadastrar";
+    }
+}
+
+// Botão de confirmar do modal (faz login OU cadastro)
+function confirmarModal(){
+
+    const nome  = document.getElementById("campoNome").value.trim();
+    const senha = document.getElementById("campoSenha").value;
+
+    if(nome === "" || senha === ""){
+        alert("Preencha nome e senha.");
+        return;
+    }
+
+    if(modoModal === "cadastro"){
+
+        if(gerenciador.existe(nome)){
+            alert("Já existe um usuário com esse nome. Escolha outro.");
+            return;
+        }
+
+        const novo = gerenciador.cadastrar(nome, senha);
+        gerenciador.entrar(novo);
+
+        alert("Conta criada! Você já está logado como " + nome + ".");
+
+    }else{
+
+        const usuario = gerenciador.autenticar(nome, senha);
+
+        if(usuario === null){
+            alert("Nome ou senha incorretos.");
+            return;
+        }
+
+        gerenciador.entrar(usuario);
+
+        alert("Bem-vindo de volta, " + nome + "!");
+    }
+
+    fecharModal();
+    atualizarUI();
+}
+
+function logout(){
+
+    gerenciador.sair();
+
+    document.getElementById("menuUsuario")
+        .classList.remove("aberto");
+
+    atualizarUI();
+}
+
+// Atualiza header, pontuação e histórico conforme o usuário ativo
+function atualizarUI(){
+
+    const btn = document.getElementById("btnUsuario");
+
+    if(gerenciador.estaLogado()){
+
+        const usuario = gerenciador.usuarioAtivo;
+
+        btn.innerHTML = "👤 " + usuario.nome;
+
+        document.getElementById("pontuacao").innerHTML =
+            usuario.pontos + " pontos";
+
+    }else{
+
+        btn.innerHTML = "Entrar";
+
+        document.getElementById("pontuacao").innerHTML =
+            "0 pontos";
+    }
+
+    atualizarHistorico();
+    atualizarBeneficiosResgatados();
+}
+
+// Estado inicial da tela (ninguém logado)
+atualizarUI();
+
+</script>
+
+</body>
+</html>
