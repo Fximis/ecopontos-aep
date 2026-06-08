@@ -76,9 +76,9 @@ GerenciadorUsuarios → autenticação e controle de sessão
 
 | Nome | GitHub |
 |------|--------|
-| Carlos Henrique Saran Pappa | [@he-nz](https://github.com/he-nz) |
+| Carlos Henrique Saran Pappa | [he-nz](https://github.com/he-nz) |
 | Fellipe Miquelão Schmidt | [Fximis](https://github.com/Fximis) |
-| Lucas Thomaz Brandel Zequini | — |
+| Lucas Thomaz Brandel Zequini | [lucastbzequini](https://github.com/lucastbzequini)  |
 
 ---
 
