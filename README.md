@@ -65,7 +65,7 @@ A proposta está alinhada com a **ODS 12 da ONU** (Consumo e Produção Respons�
 ```
 Usuario        → nome, senha, pontos, historico (Pilha<Entrega>), beneficiosResgatados (Pilha)
 Entrega        → material, quantidade, pontos, data
-Beneficio      → nome, custoEmPontos
+Benefício      → nome, custoEmPontos
 Pilha<T>       → push / pop / peek / isEmpty  (estrutura de dados implementada do zero)
 GerenciadorUsuarios → autenticação e controle de sessão
 ```
